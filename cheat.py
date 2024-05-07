@@ -1,6 +1,6 @@
 import re
 
-v = "1.1"
+v = "1.2"
 tab = " " * 4
 newline = "\n"
 
@@ -17,8 +17,8 @@ def screens():
 
     fc = re.sub(patt, repl, fc, flags=re.M)
 
-    patt='            textbutton _\("Menu"\) action ShowMenu\(\) text_font "fonts/pkmndp.ttf" background Frame\("gui/dialogue_frame.png"\) keyboard_focus False'
-    repl='            textbutton _("Menu") action ShowMenu() text_font "fonts/pkmndp.ttf" background Frame("gui/dialogue_frame.png") keyboard_focus False\n            textbutton _("HealParty") action Function(HealParty) text_font "fonts/pkmndp.ttf" background Frame("gui/dialogue_frame.png") keyboard_focus False\n            textbutton _("Cheat V' + v + '") action NullAction() text_font "fonts/pkmndp.ttf" background Frame("gui/dialogue_frame.png") keyboard_focus False'
+    patt='            textbutton _\("Menu"\) action ShowMenu\(\) text_font "fonts/pkmndp.ttf" background Frame\("gui/dialogue_frame.webp"\) keyboard_focus False'
+    repl='            textbutton _("Menu") action ShowMenu() text_font "fonts/pkmndp.ttf" background Frame("gui/dialogue_frame.webp") keyboard_focus False\n            textbutton _("HealParty") action Function(HealParty) text_font "fonts/pkmndp.ttf" background Frame("gui/dialogue_frame.webp") keyboard_focus False\n            textbutton _("Cheat V' + v + '") action NullAction() text_font "fonts/pkmndp.ttf" background Frame("gui/dialogue_frame.webp") keyboard_focus False'
 
     fc = re.sub(patt, repl, fc, flags=re.M)
 
