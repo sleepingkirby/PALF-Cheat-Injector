@@ -1,6 +1,6 @@
 import re
 
-v = "1.2"
+v = "1.4"
 tab = " " * 4
 newline = "\n"
 
@@ -24,7 +24,9 @@ def screens():
 
 
 #======= Money
-    patt='            text "\$" \+ str\(\'\{:,\}\'\.format\(money\)\) size (?P<size>[0-9]+) color "(?P<color>#[a-zA-Z0-9]+)" at Transform\(xzoom=-1\)'
+#            text "$" + str('{:,}'.format(money * (1 if playercharacter == None else 12) - (0 if not (HasEvent("Ethan", "Spent200") and playercharacter == "Ethan") else 200))) size 28 color "#1c1c1c" at Transform(xzoom=-1) alt ""
+
+    patt='            text "\$" \+ str\(\'\{:,\}\'\.format\(money \* \(1 if playercharacter == None else 12\) - \(0 if not \(HasEvent\("Ethan", "Spent200"\) and playercharacter == "Ethan"\) else 200\)\)\) size (?P<size>[0-9]+) color "(?P<color>#[a-zA-Z0-9]+)" at Transform\(xzoom=-1\)'
     repl='            textbutton "{size=\g<size>}{color=\g<color>}$" + str(\'{:,}\'.format(money)) at Transform(xzoom=-1):\n                action SetVariable("money", money + 30000)'
     fc = re.sub(patt, repl, fc, flags=re.M)
 
@@ -37,14 +39,13 @@ def screens():
 
 
 #======= Pokemon EV/IV
-    
-    patt='            text str\(pkmn\.Get(?P<eviv>EV|IV)\(Stats\.(?P<stat>Health|Attack|Defense|SpecialAttack|SpecialDefense|Speed)\)\) \+ "/(?P<num>31|255)" xminimum 300 xalign \.5 size 40'
+    patt='            text str\(pkmn\.Get(?P<eviv>EV|IV)\(Stats\.(?P<stat>Health|Attack|Defense|SpecialAttack|SpecialDefense|Speed)\)\) \+ "/(?P<num>31|252)" xminimum 300 xalign \.5 size 40'
     repl='            textbutton "{size=40}" + str(pkmn.Get\g<eviv>(Stats.\g<stat>)) + "/(\g<num>)" xalign .5 ysize 20 yanchor -7:\n                action SetDict(pkmn.\g<eviv>s, Stats.\g<stat>, pkmn.Get\g<eviv>(Stats.\g<stat>) + 1 )'
 
     fc = re.sub(patt, repl, fc, flags=re.M)
 
 #======= Pokemon Stats exclude Health
-    
+ 
     patt='            text str\(pkmn.GetStat\(Stats.(?P<stat>Attack|Defense|SpecialAttack|SpecialDefense|Speed), triggerAbilities=False, absolute=True\)\) xminimum 300 xalign .5 size 40'
     repl='            textbutton "{size=40}" + str(pkmn.GetStat(Stats.\g<stat>, triggerAbilities=False, absolute=True)) xalign .5 ysize 20 yanchor -7:\n                 action SetDict(pkmn.Stats, Stats.\g<stat>, pkmn.GetStat(Stats.\g<stat>) + 1 )'
 
@@ -60,8 +61,9 @@ def screens():
 
 
 #======= Class type
+#            text classtype + ": " + FormatNum(classstats[classtype]) size 30 color ("#FFD700" if classstats[GetStatRank(0)] == classstats[classtype] and classstats[classtype] != 0 else "#fff") outlines [ (absolute(10), "#000", absolute(0), absolute(0)) ]
 
-    patt='            text classtype \+ ": " \+ FormatNum\(classstats\[classtype\]\) size 30 color \("#f00" if classstats\[GetStatRank\(0\)\] == classstats\[classtype\] else "#fff"\) outlines \[ \(absolute\(10\), "#000", absolute\(0\), absolute\(0\)\) \]'
+    patt='            text classtype \+ ": " \+ FormatNum\(classstats\[classtype\]\) size 30 color \("#[a-zA-Z0-9]+" if classstats\[GetStatRank\(0\)\] == classstats\[classtype\] and classstats\[classtype\] != 0 else "#fff"\) outlines \[ \(absolute\(10\), "#000", absolute\(0\), absolute\(0\)\) \]'
     repl='            textbutton "{size=30}{color=#fff}" + classtype + ": " + FormatNum(classstats[classtype]):\n               action SetDict(classstats, classtype, classstats[classtype] + 1)'
 
     fc = re.sub(patt, repl, fc, flags=re.M)
