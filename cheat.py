@@ -1,6 +1,6 @@
 import re
 
-v = "1.2"
+v = "1.41"
 tab = " " * 4
 newline = "\n"
 
