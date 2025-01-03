@@ -1,6 +1,6 @@
 import re
 
-v = "1.4"
+v = "1.2"
 tab = " " * 4
 newline = "\n"
 
@@ -22,6 +22,10 @@ def screens():
 
     fc = re.sub(patt, repl, fc, flags=re.M)
 
+#======= timeOfDay
+    patt='            text "\{size=(?P<size>[0-9]+)\}\{font=fonts/Microgramma-D-OT-Bold-Extended\.ttf\}\[timeOfDay\] -\{/font\}\{/size\} \{size=28\}"\+getRWDay\(0\)\+", "\+str\(calendar.month_name\[calDate\.month\]\)\+" "\+getRDay\(0\)\+"\{/size\}" color "(?P<color>#[a-zA-Z0-9]+)"'
+    repl='            textbutton "{color=\g<color>}{size=\g<size>}{font=fonts/Microgramma-D-OT-Bold-Extended.ttf}[timeOfDay] -{/font}{/size} {size=\g<size>}"+getRWDay(0)+", "+str(calendar.month_name[calDate.month])+" "+getRDay(0)+"{/size}" action SetVariable("timeOfDay", "Morning")'
+    fc = re.sub(patt, repl, fc, flags=re.M)
 
 #======= Money
 #            text "$" + str('{:,}'.format(money * (1 if playercharacter == None else 12) - (0 if not (HasEvent("Ethan", "Spent200") and playercharacter == "Ethan") else 200))) size 28 color "#1c1c1c" at Transform(xzoom=-1) alt ""
