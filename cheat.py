@@ -1,6 +1,6 @@
 import re
 
-v = "1.41"
+v = "1.42"
 tab = " " * 4
 newline = "\n"
 
@@ -35,9 +35,8 @@ def screens():
     fc = re.sub(patt, repl, fc, flags=re.M)
 
 #======= Trainer EXPs
-
     patt='                bar range GetEXPRequiredForLevel\(char\) value pointvalue pos \(xbuffer \+ 10, 65 \+ ybuffer\) xmaximum math.floor\(335 \* xzoomvalue\) right_bar "#fff" left_bar \(barcolor if pointvalue > 0 else "#fff"\)'
-    repl='                bar value DictValue(persondex[char], "Value", 10) pos (xbuffer + 10, 65 + ybuffer) xmaximum math.floor(335 * xzoomvalue) right_bar "#fff" left_bar (barcolor if pointvalue > 0 else "#fff")'
+    repl='                bar value DictValue(persondex[char], "Value", range=GetEXPRequiredForLevel(char), min=1, max=GetEXPRequiredForLevel(char)) pos (xbuffer + 10, 65 + ybuffer) xmaximum math.floor(335 * xzoomvalue) right_bar "#fff" left_bar (barcolor if pointvalue > 0 else "#fff")'
 
     fc = re.sub(patt, repl, fc, flags=re.M)
 
