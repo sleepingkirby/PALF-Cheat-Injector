@@ -40,6 +40,11 @@ def screens():
 
     fc = re.sub(patt, repl, fc, flags=re.M)
 
+#======= Pokemon Shiny (not fully implemented yet so not applying...for now. Also, looking for a better place to place the button other than the entire name as I wouldn't want to encompass pokemon gender)
+    patt='            text nick \+ " " \+ gendersymbol size \(70 if len\(nick\) < 10 else 50) '
+    repl='            textbutton "{size=" + str(70 if len(nick) < 10 else 50) + "}" + nick + " " + gendersymbol:\n                action SetField(pkmn, "ShinyValue", 0.0)'
+    #fc = re.sub(patt, repl, fc, flags=re.M)
+
 
 #======= Pokemon EV/IV
     patt='            text str\(pkmn\.Get(?P<eviv>EV|IV)\(Stats\.(?P<stat>Health|Attack|Defense|SpecialAttack|SpecialDefense|Speed)\)\) \+ "/(?P<num>31|252)" xminimum 300 xalign \.5 size 40'
