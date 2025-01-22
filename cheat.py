@@ -1,6 +1,6 @@
 import re
 
-v = "1.42"
+v = "1.43"
 tab = " " * 4
 newline = "\n"
 
@@ -85,6 +85,36 @@ def screens():
 
 screens()
 
+
+#============= ./misc/wildarea.rpy =========
+def wildArea():
+    fn="./misc/wildarea.rpy"
+    with open(fn, "r") as file:
+        fc = file.read()
+
+#======= remove exp chain limit
+
+    patt='                \$ exptotal = math\.floor\(pow\(expvalue, 3\) / 25 \* min\(3, \(1 \+ wildcount \/ 10\)\)\)'
+    repl='                $ exptotal = math.floor(pow(expvalue, 3) / 25 * (1 + wildcount / 10))'
+
+    fc = re.sub(patt, repl, fc, flags=re.M)
+
+#======= adjust exp chain message
+
+    patt='                narrator "You have won \[wildcount\] consecutive battles, so your party will gain \[exptotal\] experience each\. \(There are no bonuses after 20 consecutive battles\.\)"'
+    repl='                narrator "You have won [wildcount] consecutive battles, so your party will gain [exptotal] experience each."'
+
+    fc = re.sub(patt, repl, fc, flags=re.M)
+
+
+
+    with open(fn, "w") as file:
+        file.write(fc)
+
+    print(f"{fn} patched")
+
+
+wildArea()
 
 
 
