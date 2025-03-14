@@ -39,9 +39,9 @@ echo -e $line$NC"\n\n"
 
 curpath=`pwd`
 
-  if [[ `basename $curpath` != "game" || `echo $curpath|grep -ic 'nullhypothesis'` -lt 1 ]]
+  if [[ `basename $curpath` != "game" || `echo $curpath|grep -ic 'PokemonAcademyLifeForever'` -lt 1 ]]
   then
-  echo -e "$BRed This script is in the wrong path. Please make sure it's in \"TheNullHypothesis<version>/game/\" folder $NC"
+  echo -e "$BRed This script is in the wrong path. Please make sure it's in \"PokemonAcademyLifeForever<version>/game/\" folder $NC"
   exit 1
   fi
 
@@ -81,26 +81,28 @@ perlP=`which perl`
 
 
 #=============  ./screens.rpy =========
-fn="screens.rpy"
+fn="./screens.rpy"
 cp $fn $fn.orig
 
 #======= setting cheat versions and Heal button
+#    text "Version " + config.version xalign 1.0 yalign 1.01 color "#fff" outlines [ (absolute(10), "#000", absolute(0), absolute(0)) ]
+
 patt='    text "Version " \+ config.version xalign 1\.0 yalign 1\.01 color "#fff" outlines \[ \(absolute\(10\), "#000", absolute\(0\), absolute\(0\)\) \]'
-repl='    text "Version " + config.version +' + '" CV ' + v + '" xalign 1.0 yalign 1.01 color "#fff" outlines [ (absolute(10), "#000", absolute(0), absolute(0)) ]'
+repl='    text "Version " + config.version + " CV '$v'" xalign 1.0 yalign 1.01 color "#fff" outlines [ (absolute(10), "#000", absolute(0), absolute(0)) ]'
 perl -0777 -i -pe 's/'"$patt"'/'"$repl"'/mg' $fn
 
-patt='            textbutton _\("Menu"\) action ShowMenu\(\) text_font "fonts/pkmndp.ttf" background Frame\("gui/dialogue_frame.webp"\) keyboard_focus False'
-repl='            textbutton _("Menu") action ShowMenu() text_font "fonts/pkmndp.ttf" background Frame("gui/dialogue_frame.webp") keyboard_focus False\n            textbutton _("HealParty") action Function(HealParty) text_font "fonts/pkmndp.ttf" background Frame("gui/dialogue_frame.webp") keyboard_focus False\n            textbutton _("Cheat V' + v + '") action NullAction() text_font "fonts/pkmndp.ttf" background Frame("gui/dialogue_frame.webp") keyboard_focus False'
+patt='            textbutton _\("Menu"\) action ShowMenu\(\) text_font "fonts\/pkmndp.ttf" background Frame\("gui\/dialogue_frame.webp"\) keyboard_focus False'
+repl='            textbutton _("Menu") action ShowMenu() text_font "fonts\/pkmndp.ttf" background Frame("gui\/dialogue_frame.webp") keyboard_focus False\n            textbutton _("HealParty") action Function(HealParty) text_font "fonts\/pkmndp.ttf" background Frame("gui\/dialogue_frame.webp") keyboard_focus False\n            textbutton _("Cheat V'$v'") action NullAction() text_font "fonts\/pkmndp.ttf" background Frame("gui\/dialogue_frame.webp") keyboard_focus False'
 perl -0777 -i -pe 's/'"$patt"'/'"$repl"'/mg' $fn
 
 #======= timeOfDay
-patt='            text "\{size=(?P<size>[0-9]+)\}\{font=fonts/Microgramma-D-OT-Bold-Extended\.ttf\}\[timeOfDay\] -\{/font\}\{/size\} \{size=28\}"\+getRWDay\(0\)\+", "\+str\(calendar.month_name\[calDate\.month\]\)\+" "\+getRDay\(0\)\+"\{/size\}" color "(?P<color>#[a-zA-Z0-9]+)"'
-repl='            textbutton "{color=$+{color}}{size=$+{size}}{font=fonts/Microgramma-D-OT-Bold-Extended.ttf}[timeOfDay] -{/font}{/size} {size=$+{size}}"+getRWDay(0)+", "+str(calendar.month_name[calDate.month])+" "+getRDay(0)+"{/size}" action SetVariable("timeOfDay", "Morning")'
+patt='            text "\{size=(?P<size>[0-9]+)\}\{font=fonts\/Microgramma-D-OT-Bold-Extended\.ttf\}\[timeOfDay\] -\{\/font\}\{\/size\} \{size=28\}"\+getRWDay\(0\)\+", "\+str\(calendar.month_name\[calDate\.month\]\)\+" "\+getRDay\(0\)\+"\{\/size\}" color "(?P<color>#[a-zA-Z0-9]+)"'
+repl='            textbutton "{color=$+{color}}{size=$+{size}}{font=fonts\/Microgramma-D-OT-Bold-Extended.ttf}[timeOfDay] -{\/font}{\/size} {size=$+{size}}"+getRWDay(0)+", "+str(calendar.month_name[calDate.month])+" "+getRDay(0)+"{\/size}" action SetVariable("timeOfDay", "Morning")'
 perl -0777 -i -pe 's/'"$patt"'/'"$repl"'/mg' $fn
 
 #======= Money
 patt='            text "\$" \+ str\('"'"'\{:,\}'"'"'\.format\(money \* \(1 if playercharacter == None else 12\) - \(0 if not \(HasEvent\("Ethan", "Spent200"\) and playercharacter == "Ethan"\) else 200\)\)\) size (?P<size>[0-9]+) color "(?P<color>#[a-zA-Z0-9]+)" at Transform\(xzoom=-1\)'
-repl='            textbutton "{size=$+{size}}{color=$+{color}}$" + str('"'"'{:,}'"'"'.format(money)) at Transform(xzoom=-1):\n                action SetVariable("money", money + 30000)'
+repl='            textbutton "{size=$+{size}}{color=$+{color}}\$" + str('"'"'{:,}'"'"'.format(money)) at Transform(xzoom=-1):\n                action SetVariable("money", money + 30000)'
 perl -0777 -i -pe 's/'"$patt"'/'"$repl"'/mg' $fn
 
 #======= Trainer EXPs
@@ -113,8 +115,8 @@ patt='            text nick \+ " " \+ gendersymbol size \(70 if len\(nick\) < 10
 repl='            textbutton "{size=" + str(70 if len(nick) < 10 else 50) + "}" + nick + " " + gendersymbol:\n                action SetField(pkmn, "ShinyValue", 0.0)'
 
 #======= Pokemon EV/IV
-patt='            text str\(pkmn\.Get(?P<eviv>EV|IV)\(Stats\.(?P<stat>Health|Attack|Defense|SpecialAttack|SpecialDefense|Speed)\)\) \+ "/(?P<num>31|252)" xminimum 300 xalign \.5 size 40'
-repl='            textbutton "{size=40}" + str(pkmn.Get$+{eviv}(Stats.$+{stat})) + "/($+{num})" xalign .5 ysize 20 yanchor -7:\n                action SetDict(pkmn.$+{eviv}s, Stats.$+{stat}, pkmn.Get$+{eviv}(Stats.$+{stat}) + 1 )'
+patt='            text str\(pkmn\.Get(?P<eviv>EV|IV)\(Stats\.(?P<stat>Health|Attack|Defense|SpecialAttack|SpecialDefense|Speed)\)\) \+ "\/(?P<num>31|252)" xminimum 300 xalign \.5 size 40'
+repl='            textbutton "{size=40}" + str(pkmn.Get$+{eviv}(Stats.$+{stat})) + "\/($+{num})" xalign .5 ysize 20 yanchor -7:\n                action SetDict(pkmn.$+{eviv}s, Stats.$+{stat}, pkmn.Get$+{eviv}(Stats.$+{stat}) + 1 )'
 perl -0777 -i -pe 's/'"$patt"'/'"$repl"'/mg' $fn
 
 #======= Pokemon Stats exclude Health
@@ -124,8 +126,8 @@ perl -0777 -i -pe 's/'"$patt"'/'"$repl"'/mg' $fn
 
 
 #======= Pokemon Stats Health
-patt='            text str\(max\(pkmn.GetHealth\(\), pkmn.GetCaught\(\)\)\) \+ "/" \+ str\(pkmn.GetStat\(Stats.Health\)\) xminimum 300 xalign .5 size 40'
-repl='            textbutton "{size=40}" + str(max(pkmn.GetHealth(), pkmn.GetCaught())) + "/" + str(pkmn.GetStat(Stats.Health)) xalign .5 ysize 20 yanchor -7:\n                 action SetDict(pkmn.Stats, Stats.Health, pkmn.GetStat(Stats.Health) + 1 )'
+patt='            text str\(max\(pkmn.GetHealth\(\), pkmn.GetCaught\(\)\)\) \+ "\/" \+ str\(pkmn.GetStat\(Stats.Health\)\) xminimum 300 xalign .5 size 40'
+repl='            textbutton "{size=40}" + str(max(pkmn.GetHealth(), pkmn.GetCaught())) + "\/" + str(pkmn.GetStat(Stats.Health)) xalign .5 ysize 20 yanchor -7:\n                 action SetDict(pkmn.Stats, Stats.Health, pkmn.GetStat(Stats.Health) + 1 )'
 perl -0777 -i -pe 's/'"$patt"'/'"$repl"'/mg' $fn
 
 #======= Class type
@@ -140,8 +142,8 @@ fn="./misc/wildarea.rpy"
 cp $fn $fn.orig
 
 # remove exp chain limit
-patt='                \$ exptotal = math\.floor\(pow\(expvalue, 3\) / 25 \* min\(3, \(1 \+ wildcount \/ 10\)\)\)'
-repl='                $ exptotal = math.floor(pow(expvalue, 3) / 25 * (1 + wildcount / 10))'
+patt='                \$ exptotal = math\.floor\(pow\(expvalue, 3\) \/ 25 \* min\(3, \(1 \+ wildcount \/ 10\)\)\)'
+repl='                \$ exptotal = math.floor(pow(expvalue, 3) \/ 25 * (1 + wildcount \/ 10))'
 perl -0777 -i -pe 's/'"$patt"'/'"$repl"'/mg' $fn
 
 
