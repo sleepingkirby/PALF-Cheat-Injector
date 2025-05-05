@@ -1,6 +1,6 @@
 import re
 
-v = "1.43"
+v = "1.44"
 tab = " " * 4
 newline = "\n"
 
@@ -28,10 +28,9 @@ def screens():
     fc = re.sub(patt, repl, fc, flags=re.M)
 
 #======= Money
-#            text "$" + str('{:,}'.format(money * (1 if playercharacter == None else 12) - (0 if not (HasEvent("Ethan", "Spent200") and playercharacter == "Ethan") else 200))) size 28 color "#1c1c1c" at Transform(xzoom=-1) alt ""
 
-    patt='            text "\$" \+ str\(\'\{:,\}\'\.format\(money \* \(1 if playercharacter == None else 12\) - \(0 if not \(HasEvent\("Ethan", "Spent200"\) and playercharacter == "Ethan"\) else 200\)\)\) size (?P<size>[0-9]+) color "(?P<color>#[a-zA-Z0-9]+)" at Transform\(xzoom=-1\)'
-    repl='            textbutton "{size=\g<size>}{color=\g<color>}$" + str(\'{:,}\'.format(money)) at Transform(xzoom=-1):\n                action SetVariable("money", money + 30000)'
+    patt='            text moneyamount size (?P<size>[0-9]+) color "(?P<color>#[a-zA-Z0-9]+)" at Transform\(xzoom=-1\) alt ""'
+    repl='            textbutton "{size=\g<size>}{color=\g<color>}" + moneyamount at Transform(xzoom=-1) alt "":\n                action SetVariable("money", money + 30000)'
     fc = re.sub(patt, repl, fc, flags=re.M)
 
 #======= Trainer EXPs
