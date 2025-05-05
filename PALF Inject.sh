@@ -101,8 +101,8 @@ repl='            textbutton "{color=$+{color}}{size=$+{size}}{font=fonts\/Micro
 perl -0777 -i -pe 's/'"$patt"'/'"$repl"'/mg' $fn
 
 #======= Money
-patt='            text "\$" \+ str\('"'"'\{:,\}'"'"'\.format\(money \* \(1 if playercharacter == None else 12\) - \(0 if not \(HasEvent\("Ethan", "Spent200"\) and playercharacter == "Ethan"\) else 200\)\)\) size (?P<size>[0-9]+) color "(?P<color>#[a-zA-Z0-9]+)" at Transform\(xzoom=-1\)'
-repl='            textbutton "{size=$+{size}}{color=$+{color}}\$" + str('"'"'{:,}'"'"'.format(money)) at Transform(xzoom=-1):\n                action SetVariable("money", money + 30000)'
+patt='            text moneyamount size (?P<size>[0-9]+) color "(?P<color>#[a-zA-Z0-9]+)" at Transform\(xzoom=-1\) alt ""'
+repl='            textbutton "{size=$+{size}}{color=$+{color}}" + moneyamount at Transform(xzoom=-1) alt "":\n                action SetVariable("money", money + 30000)'
 perl -0777 -i -pe 's/'"$patt"'/'"$repl"'/mg' $fn
 
 #======= Trainer EXPs
