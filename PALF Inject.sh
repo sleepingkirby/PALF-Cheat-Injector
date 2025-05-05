@@ -1,5 +1,5 @@
 #!/bin/bash
-v='1.44'
+v='1.45'
 rpaurl='https://raw.githubusercontent.com/Shizmob/rpatool/master/rpatool'
 
 clear
@@ -96,8 +96,9 @@ repl='            textbutton _("Menu") action ShowMenu() text_font "fonts\/pkmnd
 perl -0777 -i -pe 's/'"$patt"'/'"$repl"'/mg' $fn
 
 #======= timeOfDay
-patt='            text "\{size=(?P<size>[0-9]+)\}\{font=fonts\/Microgramma-D-OT-Bold-Extended\.ttf\}\[timeOfDay\] -\{\/font\}\{\/size\} \{size=28\}"\+getRWDay\(0\)\+", "\+str\(calendar.month_name\[calDate\.month\]\)\+" "\+getRDay\(0\)\+"\{\/size\}" color "(?P<color>#[a-zA-Z0-9]+)"'
-repl='            textbutton "{color=$+{color}}{size=$+{size}}{font=fonts\/Microgramma-D-OT-Bold-Extended.ttf}[timeOfDay] -{\/font}{\/size} {size=$+{size}}"+getRWDay(0)+", "+str(calendar.month_name[calDate.month])+" "+getRDay(0)+"{\/size}" action SetVariable("timeOfDay", "Morning")'
+patt='                text "\{size=(?P<size>[0-9]+)\}\{font=fonts\/Microgramma-D-OT-Bold-Extended\.ttf\}\[timeOfDay\] -\{\/font\}\{\/size\} \{size=(?P<size>[0-9]+)\}"\+getRWDay\(0\)\+", "\+str\(calendar\.month_name\[calDate\.month\]\)\+" "\+getRDay\(0\)\+ \(", Week " \+ str\(math\.floor\(\(calDate - datetime\.datetime\(2004, 4, 5\)\)\.days \/ 7\) \+ 1\) if not IsDate\(2, 4, 2004\) else ""\) \+ "\{\/size\}" color "(?P<color>#[a-zA-Z0-9]+)" alt ""'
+repl='                textbutton "{color=$+{color}}{size=$+{size}}{font=fonts\/Microgramma-D-OT-Bold-Extended.ttf}[timeOfDay] -{\/font}{\/size} {size=$+{size}}"+getRWDay(0)+", "+str(calendar.month_name[calDate.month])+" "+getRDay(0)+ (", Week " + str(math.floor((calDate - datetime.datetime(2004, 4, 5)).days \/ 7) + 1) if not IsDate(2, 4, 2004) else "") + "{\/size}" alt ""  action SetVariable("timeOfDay", "Morning")'
+
 perl -0777 -i -pe 's/'"$patt"'/'"$repl"'/mg' $fn
 
 #======= Money
