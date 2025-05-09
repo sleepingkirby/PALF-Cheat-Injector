@@ -55,7 +55,7 @@ def screens():
 #======= Pokemon Stats exclude Health
  
     patt='            text str\(pkmn.GetStat\(Stats.(?P<stat>Attack|Defense|SpecialAttack|SpecialDefense|Speed), triggerAbilities=False, absolute=True\)\) xminimum 300 xalign .5 size 40'
-    repl='            textbutton "{size=40}" + str(pkmn.GetStat(Stats.\g<stat>, triggerAbilities=False, absolute=True)) xalign .5 ysize 20 yanchor -7:\n                 action SetDict(pkmn.Stats, Stats.\g<stat>, pkmn.GetStat(Stats.\g<stat>) + 1 )'
+    repl='            textbutton "{size=40}" + str(pkmn.GetStat(Stats.\g<stat>, triggerAbilities=False, absolute=True)) xalign .5 ysize 20 yanchor -7:\n                 action SetDict(pkmn.Stats, Stats.\g<stat>, pkmn.GetStat(Stats.\g<stat>, absolute=True) + 1 )'
 
     fc = re.sub(patt, repl, fc, flags=re.M)
 

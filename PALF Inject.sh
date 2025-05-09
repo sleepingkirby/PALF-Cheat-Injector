@@ -122,13 +122,13 @@ perl -0777 -i -pe 's/'"$patt"'/'"$repl"'/mg' $fn
 
 #======= Pokemon Stats exclude Health
 patt='            text str\(pkmn.GetStat\(Stats.(?P<stat>Attack|Defense|SpecialAttack|SpecialDefense|Speed), triggerAbilities=False, absolute=True\)\) xminimum 300 xalign .5 size 40'
-repl='            textbutton "{size=40}" + str(pkmn.GetStat(Stats.$+{stat}, triggerAbilities=False, absolute=True)) xalign .5 ysize 20 yanchor -7:\n                 action SetDict(pkmn.Stats, Stats.$+{stat}, pkmn.GetStat(Stats.$+{stat}) + 1 )'
+repl='            textbutton "{size=40}" + str(pkmn.GetStat(Stats.$+{stat}, triggerAbilities=False, absolute=True)) xalign .5 ysize 20 yanchor -7:\n                 action SetDict(pkmn.Stats, Stats.$+{stat}, pkmn.GetStat(Stats.$+{stat}, absolute=True) + 1)'
 perl -0777 -i -pe 's/'"$patt"'/'"$repl"'/mg' $fn
 
 
 #======= Pokemon Stats Health
 patt='            text str\(max\(pkmn.GetHealth\(\), pkmn.GetCaught\(\)\)\) \+ "\/" \+ str\(pkmn.GetStat\(Stats.Health\)\) xminimum 300 xalign .5 size 40'
-repl='            textbutton "{size=40}" + str(max(pkmn.GetHealth(), pkmn.GetCaught())) + "\/" + str(pkmn.GetStat(Stats.Health)) xalign .5 ysize 20 yanchor -7:\n                 action SetDict(pkmn.Stats, Stats.Health, pkmn.GetStat(Stats.Health) + 1 )'
+repl='            textbutton "{size=40}" + str(max(pkmn.GetHealth(), pkmn.GetCaught())) + "\/" + str(pkmn.GetStat(Stats.Health)) xalign .5 ysize 20 yanchor -7:\n                 action SetDict(pkmn.Stats, Stats.Health, pkmn.GetStat(Stats.Health) + 1)'
 perl -0777 -i -pe 's/'"$patt"'/'"$repl"'/mg' $fn
 
 #======= Class type
