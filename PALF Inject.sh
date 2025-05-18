@@ -1,5 +1,5 @@
 #!/bin/bash
-v='1.45'
+v='1.46'
 rpaurl='https://raw.githubusercontent.com/Shizmob/rpatool/master/rpatool'
 
 clear
@@ -93,6 +93,11 @@ perl -0777 -i -pe 's/'"$patt"'/'"$repl"'/mg' $fn
 
 patt='            textbutton _\("Menu"\) action ShowMenu\(\) text_font "fonts\/pkmndp.ttf" background Frame\("gui\/dialogue_frame.webp"\) keyboard_focus False'
 repl='            textbutton _("Menu") action ShowMenu() text_font "fonts\/pkmndp.ttf" background Frame("gui\/dialogue_frame.webp") keyboard_focus False\n            textbutton _("HealParty") action Function(HealParty) text_font "fonts\/pkmndp.ttf" background Frame("gui\/dialogue_frame.webp") keyboard_focus False\n            textbutton _("Cheat V'$v'") action NullAction() text_font "fonts\/pkmndp.ttf" background Frame("gui\/dialogue_frame.webp") keyboard_focus False'
+perl -0777 -i -pe 's/'"$patt"'/'"$repl"'/mg' $fn
+
+#====== Max Liberation Limit
+patt='                text str\(ll\[0\]\) \+ "\/" \+ str\(maxliberationlimit\) size (?P<size>[0-9]+) xalign (?P<xalign>[0-9.]+) color (?P<color>"#[0-9A-Za-z]+") font (?P<font>"[a-zA-Z\/]+\.[a-zA-Z0-9]+")'
+repl='                textbutton str(ll[0]) + "\/" + str(maxliberationlimit) text_size $+{size} text_xalign $+{xalign} text_color $+{color} text_font $+{font} action SetVariable("maxliberationlimit", maxliberationlimit + 10)'
 perl -0777 -i -pe 's/'"$patt"'/'"$repl"'/mg' $fn
 
 #======= timeOfDay

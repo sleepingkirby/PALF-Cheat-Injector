@@ -1,6 +1,6 @@
 import re
 
-v = "1.45"
+v = "1.46"
 tab = " " * 4
 newline = "\n"
 
@@ -20,6 +20,11 @@ def screens():
     patt='            textbutton _\("Menu"\) action ShowMenu\(\) text_font "fonts/pkmndp.ttf" background Frame\("gui/dialogue_frame.webp"\) keyboard_focus False'
     repl='            textbutton _("Menu") action ShowMenu() text_font "fonts/pkmndp.ttf" background Frame("gui/dialogue_frame.webp") keyboard_focus False\n            textbutton _("HealParty") action Function(HealParty) text_font "fonts/pkmndp.ttf" background Frame("gui/dialogue_frame.webp") keyboard_focus False\n            textbutton _("Cheat V' + v + '") action NullAction() text_font "fonts/pkmndp.ttf" background Frame("gui/dialogue_frame.webp") keyboard_focus False'
 
+    fc = re.sub(patt, repl, fc, flags=re.M)
+
+#====== Max Liberation Limit
+    patt='                text str\(ll\[0\]\) \+ "/" \+ str\(maxliberationlimit\) size (?P<size>[0-9]+) xalign (?P<xalign>[0-9.]+) color (?P<color>"#[0-9A-Za-z]+") font (?P<font>"[a-zA-Z/]+\.[a-zA-Z0-9]+")'
+    repl='                textbutton str(ll[0]) + "/" + str(maxliberationlimit) text_size \g<size> text_xalign \g<xalign> text_color \g<color> text_font \g<font> action SetVariable("maxliberationlimit", maxliberationlimit + 10)'
     fc = re.sub(patt, repl, fc, flags=re.M)
 
 #======= timeOfDay
