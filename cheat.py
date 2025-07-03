@@ -1,6 +1,6 @@
 import re
 
-v = "1.46"
+v = "1.47"
 tab = " " * 4
 newline = "\n"
 
@@ -112,14 +112,51 @@ def wildArea():
     fc = re.sub(patt, repl, fc, flags=re.M)
 
 
-
     with open(fn, "w") as file:
         file.write(fc)
 
     print(f"{fn} patched")
 
-
 wildArea()
+
+
+# Setting button, and function for that button, to restore energy for pokemon contest
+#=========== ./contests/contestfunctions.rpy
+def contestfunctions():
+    fn="./contests/contestfunctions.rpy"
+    with open(fn, "r") as file:
+        fc = file.read()
+
+    # adding function to find and reset energy to the protagonist
+    patt='    def ContestStringToMacro\(conteststring\):'
+    repl='    def FillProtagEnergy(coordinators):\n        for i, coord in enumerate(coordinators):\n            for i, c in enumerate(coord.Coordinators):\n                if (c.IsProtagonist):\n                    coord.Energy = 3\n                    return\n\n    def ContestStringToMacro(conteststring):'
+
+    fc = re.sub(patt, repl, fc, flags=re.M)
+    with open(fn, "w") as file:
+        file.write(fc)
+
+    print(f"{fn} patched")
+
+contestfunctions()
+
+
+
+#=========== ./contests/contestscreens.rpy
+def contestscreens():
+    fn="./contests/contestscreens.rpy"
+    with open(fn, "r") as file:
+        fc = file.read()
+
+    patt='                    text "{b}Condition{/b}: At the beginning of each Contest, the Coordinator-Pokémon pair that is in the best visual condition will earn 50 points, with runners-up winning linearly fewer. This is tied to \[contestcolor\]Coordinating Knowledge.{/color}" color "#000"'
+    repl='                    textbutton "Refill Energy" action Function(FillProtagEnergy, Coordinators)\n                    text "{b}Condition{/b}: At the beginning of each Contest, the Coordinator-Pokémon pair that is in the best visual condition will earn 50 points, with runners-up winning linearly fewer. This is tied to [contestcolor]Coordinating Knowledge.{/color}" color "#000"'
+
+    fc = re.sub(patt, repl, fc, flags=re.M)
+    with open(fn, "w") as file:
+        file.write(fc)
+
+    print(f"{fn} patched")
+
+contestscreens()
 
 
 

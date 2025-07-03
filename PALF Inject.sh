@@ -167,8 +167,9 @@ cp $fn $fn.orig
 
 # adding function to find and reset energy to the protagonist
 patt='    def ContestStringToMacro\(conteststring\):'
-repl='    def FillProtagEnergy(coordinators):\n        for i, coord in enumerate(coordinators):\n            for i, c in enumerate(coord.Coordinators):\n                if (c.IsProtagonist):\n                    coord.Energy = 3\n                    return\n\n    def ContestStringToMacro\(conteststring\):'
+repl='    def FillProtagEnergy(coordinators):\n        for i, coord in enumerate(coordinators):\n            for i, c in enumerate(coord.Coordinators):\n                if (c.IsProtagonist):\n                    coord.Energy = 3\n                    return\n\n    def ContestStringToMacro(conteststring):'
 perl -0777 -i -pe 's/'"$patt"'/'"$repl"'/mg' $fn
+echo -e "${BGreen}${fn} patched$NC"
 
 #=========== ./contests/contestscreens.rpy
 fn="./contests/contestscreens.rpy"
@@ -177,6 +178,7 @@ cp $fn $fn.orig
 patt='                    text "{b}Condition{\/b}: At the beginning of each Contest, the Coordinator-Pokémon pair that is in the best visual condition will earn 50 points, with runners-up winning linearly fewer. This is tied to \[contestcolor\]Coordinating Knowledge.{\/color}" color "#000"'
 repl='                    textbutton "Refill Energy" action Function(FillProtagEnergy, Coordinators)\n                    text "{b}Condition{\/b}: At the beginning of each Contest, the Coordinator-Pokémon pair that is in the best visual condition will earn 50 points, with runners-up winning linearly fewer. This is tied to [contestcolor]Coordinating Knowledge.{\/color}" color "#000"'
 perl -0777 -i -pe 's/'"$patt"'/'"$repl"'/mg' $fn
+echo -e "${BGreen}${fn} patched$NC"
 
 
 IFS=$bkupIFS
