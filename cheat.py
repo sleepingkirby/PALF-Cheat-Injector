@@ -1,6 +1,6 @@
 import re
 
-v = "1.47"
+v = "1.48"
 tab = " " * 4
 newline = "\n"
 
@@ -98,16 +98,14 @@ def wildArea():
         fc = file.read()
 
 #======= remove exp chain limit
-
-    patt='                \$ exptotal = math\.floor\(pow\(expvalue, 3\) / 25 \* min\(3, \(1 \+ wildcount \/ 10\)\)\)'
-    repl='                $ exptotal = math.floor(pow(expvalue, 3) / 25 * (1 + wildcount / 10))'
+    patt='min\(3, \(1 \+ wildcount / 10\)\)\)'
+    repl='(1 + wildcount / 10))'
 
     fc = re.sub(patt, repl, fc, flags=re.M)
 
 #======= adjust exp chain message
-
-    patt='                narrator "You have won \[wildcount\] consecutive battles, so your party will gain \[exptotal\] experience each\. \(There are no bonuses after 20 consecutive battles\.\)"'
-    repl='                narrator "You have won [wildcount] consecutive battles, so your party will gain [exptotal] experience each."'
+    patt=' \(There are no bonuses after 20 consecutive battles\.\)'
+    repl=''
 
     fc = re.sub(patt, repl, fc, flags=re.M)
 
